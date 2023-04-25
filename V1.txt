@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quotation Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f0f0f0;
+			padding: 20px;
+		}
+		h1 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		form {
+			background-color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+		}
+		label {
+			display: block;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+		select {
+			margin-bottom: 10px;
+			padding: 5px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+			width: 100%;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 20px;
+		}
+		table th,
+		table td {
+			padding: 10px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+		table th {
+			background-color: #f0f0f0;
+		}
+		input[type="number"] {
+			margin-bottom: 10px;
+			padding: 5px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+			width: 100%;
+		}
+		button {
+			background-color: #4CAF50;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Quotation Page</h1>
+	<form>
+		<label for="product">Product:</label>
+		<select id="product">
+			<option value="Product A">Product A</option>
+			<option value="Product B">Product B</option>
+			<option value="Product C">Product C</option>
+			<option value="Product D">Product D</option>
+		</select>
+		<label for="price">Price:</label>
+		<input type="number" id="price" value="100">
+		<button type="button" onclick="addProduct()">Add Product</button>
+		<table id="productList">
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<label for="total">Total:</label>
+		<input type="number" id="total" value="0" readonly>
+	</form>
+	<script>
+		function addProduct() {
+			// Get the selected product and its price
+			var product = document.getElementById("product").value;
+			var price = parseFloat(document.getElementById("price").value);
+		// Validate the price
+		if (isNaN(price) || price <= 0) {
+			alert("Please enter a valid price.");
+			return;
+		}
+
+		// Add the product to the table
+		var table = document.getElementById("productList");
+		var row = table.insertRow();
+		var productNameCell = row.insertCell(0);
+		var priceCell = row.insertCell(1);
+		var actionCell = row.insertCell(2);
+		productNameCell.innerHTML = product;
+		priceCell.innerHTML = price.toFixed(2);
+		actionCell.innerHTML = '<button type="button" onclick="removeProduct(this)">Remove</button>';
+
+		// Calculate the total price
+		var totalPrice = 0;
+		var rows = table.rows;
+		for (var i = 1; i < rows.length; i++) {
+			var row = rows[i];
+			var price = parseFloat(row.cells[1].innerHTML);
+			totalPrice += price;
+		}
+		document.getElementById("total").value = totalPrice.toFixed(2);
+	}
+
+	function removeProduct(button) {
+		// Remove the product from the table
+		var row = button.parentNode.parentNode;
+		row.parentNode.removeChild(row);
+
+		// Calculate the total price
+		var table = document.getElementById("productList");
+		var totalPrice = 0;
+		var rows = table.rows;
+		for (var i = 1; i < rows.length; i++) {
+			var row = rows[i];
+			var price = parseFloat(row.cells[1].innerHTML);
+			totalPrice += price;
+		}
+		document.getElementById("total").value = totalPrice.toFixed(2);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quotation Form</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		h1 {
+			text-align: center;
+			margin: 20px 0;
+		}
+		form {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+		label {
+			display: block;
+			margin-bottom: 10px;
+		}
+		input[type="text"],
+		select {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		button:hover {
+			background-color: #3e8e41;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 20px;
+		}
+		th, td {
+			padding: 10px;
+			border: 1px solid #ccc;
+			text-align: left;
+		}
+		th {
+			background-color: #ddd;
+			font-weight: normal;
+		}
+		.total-row {
+			font-weight: bold;
+		}
+		@media print {
+			body * {
+				visibility: hidden;
+			}
+			#printable, #printable * {
+				visibility: visible;
+			}
+			#printable {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<h1>Quotation Form</h1>
+	<form>
+        <h2>Client Details</h2>
+		<label for="clientName">Name</label>
+		<input type="text" id="clientName" name="clientName">
+
+        <label for="clientCompany">Company</label>
+		<input type="text" id="clientCompany" name="clientCompany">
+
+		<label for="clientEmail">Email</label>
+		<input type="text" id="clientEmail" name="clientEmail">
+		
+        <label for="clientAddress">Address</label>
+		<input type="text" id="clientAddress" name="clientAddress">
+
+        <label for="clientPhone">Phone</label>
+		<input type="text" id="clientPhone" name="clientPhone">
+        
+        <h2> Sales Representative Details</h2>
+        
+		<label for="salesRepName">Name</label>
+		<input type="text" id="salesRepName" name="salesRepName">
+
+		<label for="salesRepEmail">Email</label>
+		<input type="text" id="salesRepEmail" name="salesRepEmail">
+
+        <label for="salesRepEmail">Phone</label>
+		<input type="text" id="salesRepPhone" name="salesRepPhone">
+
+        <h2>Add Product Details</h2>
+
+		<label for="product">Product</label>
+		<select id="product" name="product">
+			<option value="Product A">Product A</option>
+			<option value="Product B">Product B</option>
+			<option value="Product C">Product C</option>
+            <option value="Product D">Product D</option>
+			<option value="Product E">Product E</option>
+			<option value="Product F">Product F</option>
+		</select>
+
+        <label for="price">Price</label>
+		<input type="text" id="price" name="price">
+	    <button type="button" onclick="addProduct()">Add Product</button>
+
+
+          <h2>Subscription Time</h2>
+
+		<label for="years">Product</label>
+		<select id="years" name="years">
+			<option value="1 Year">1 Year</option>
+			<option value="3 Years">3 Years</option>
+			<option value="5 Years">5 Years</option>
+		</select>
+
+		
+
+	
+
+        <h2>Products List</h2>
+
+		<table id="productList">
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+			<tfoot>
+							<tr class="total-row">
+					<td>Total</td>
+					<td id="totalPrice"></td>
+					<td></td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<button type="button" onclick="printPage()">Print</button>
+	</form>
+
+	<div id="printable" style="display:none">
+		<h1>Quotation</h1>
+
+        <h2>Client Detials</h2>
+		<p><strong>Name:</strong> <span id="printClientName"></span></p>
+         <p><strong>Company:</strong> <span id="printClientCompany"></span></p>
+		<p><strong>Email:</strong> <span id="printClientEmail"></span></p>
+        <p><strong>Address:</strong> <span id="printClientAddress"></span></p>
+        <p><strong>Phone:</strong> <span id="printClientPhone"></span></p>
+       
+
+        <h2>Sales Representative Details</h2>
+		<p><strong>Name:</strong> <span id="printSalesRepName"></span></p>
+		<p><strong>Email:</strong> <span id="printSalesRepEmail"></span></p>
+        <p><strong>Phone:</strong> <span id="printSalesRepPhone"></span></p>
+
+        <h2>Subscription Time</h2>
+        <p><strong>Years:</strong> <span id="printYears"></span></p>
+
+        <h2>Products List</h2>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody id="printProductList">
+			</tbody>
+			<tfoot>
+				<tr class="total-row">
+					<td>Total</td>
+					<td id="printTotalPrice"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<script>
+		// Initialize variables
+		let productList = [];
+		let total = 0;
+
+		// Function to add a product to the table
+		function addProduct() {
+			// Get selected product and price
+			let product = document.getElementById("product").value;
+			let price = document.getElementById("price").value;
+
+			// Validate price input
+			if (!price || isNaN(price)) {
+				alert("Please enter a valid price.");
+				return;
+			}
+
+			// Add product to array and update table
+			productList.push({ product: product, price: parseFloat(price) });
+			updateTable();
+		}
+
+		// Function to update the product table and total price
+		function updateTable() {
+			// Clear table
+			let tableBody = document.querySelector("#productList tbody");
+			tableBody.innerHTML = "";
+
+			// Add each product to table
+			productList.forEach(function(item, index) {
+				let row = tableBody.insertRow();
+				let productCell = row.insertCell(0);
+				let priceCell = row.insertCell(1);
+				let actionCell = row.insertCell(2);
+
+				productCell.innerHTML = item.product;
+				priceCell.innerHTML = item.price.toFixed(2);
+				actionCell.innerHTML = "<button type='button' onclick='removeProduct(" + index + ")'>Remove</button>";
+			});
+
+			// Calculate total price
+			total = productList.reduce(function(total, item) {
+				return total + item.price;
+			}, 0);
+
+			// Update total price in table and print section
+			document.getElementById("totalPrice").innerHTML = total.toFixed(2);
+			document.getElementById("printTotalPrice").innerHTML = total.toFixed(2);
+		}
+
+		// Function to remove a product from the table
+		function removeProduct(index) {
+			productList.splice(index, 1);
+			updateTable();
+		}
+
+		// Function to print the quotation
+		function printPage() {
+			// Set client and sales rep information
+			document.getElementById("printClientName").innerHTML = document.getElementById("clientName").value;
+            document.getElementById("printClientCompany").innerHTML = document.getElementById("clientCompany").value;
+			document.getElementById("printClientEmail").innerHTML = document.getElementById("clientEmail").value;
+            document.getElementById("printClientAddress").innerHTML = document.getElementById("clientAddress").value;
+            document.getElementById("printClientPhone").innerHTML = document.getElementById("clientPhone").value;
+          
+
+            document.getElementById("printSalesRepName").innerHTML = document.getElementById("salesRepName").value;
+            document.getElementById("printSalesRepEmail").innerHTML = document.getElementById("salesRepEmail").value;
+            document.getElementById("printSalesRepPhone").innerHTML = document.getElementById("salesRepPhone").value;
+            
+            document.getElementById("printYears").innerHTML = document.getElementById("years").value;
+// Populate product list
+		let printProductList = document.getElementById("printProductList");
+		printProductList.innerHTML = "";
+		productList.forEach(function(item) {
+			let row = printProductList.insertRow();
+			let productCell = row.insertCell(0);
+			let priceCell = row.insertCell(1);
+
+			productCell.innerHTML = item.product;
+			priceCell.innerHTML = item.price.toFixed(2);
+		});
+
+		// Show print section and hide form
+		document.getElementById("printable").style.display = "block";
+		document.querySelector("form").style.display = "none";
+
+		// Print the page
+		window.print();
+
+		// Show form and hide print section
+		document.querySelector("form").style.display = "block";
+		document.getElementById("printable").style.display = "none";
+	}
+</script>
+</body>
+</html>
