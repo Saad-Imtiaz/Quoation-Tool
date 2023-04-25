@@ -127,22 +127,22 @@
 
         <label for="price">Price</label>
 		<input type="text" id="price" name="price">
+
+        <label for="details">Details</label>
+        <input type="text" id="details" name="details">
         
 	    <button type="button" onclick="addProduct()">Add Product</button>
 
 
           <h2>Subscription Time</h2>
 
-		<label for="years">Product</label>
+		<label for="years">Years</label>
 		<select id="years" name="years">
 			<option value="1 Year">1 Year</option>
 			<option value="3 Years">3 Years</option>
 			<option value="5 Years">5 Years</option>
 		</select>
-
-		
-
-	
+        
 
         <h2>Products List</h2>
 
@@ -150,6 +150,7 @@
 			<thead>
 				<tr>
 					<th>Product</th>
+                    <th>Details</th>
 					<th>Price</th>
 					<th>Action</th>
 				</tr>
@@ -157,13 +158,15 @@
 			<tbody>
 			</tbody>
 			<tfoot>
-							<tr class="total-row">
+					<tr class="total-row">      
 					<td>Total</td>
-					<td id="totalPrice"></td>
+					<td id="totalPrice"></td> 
 					<td></td>
 				</tr>
 			</tfoot>
 		</table>
+
+
 
 		<button type="button" onclick="printPage()">Print</button>
 	</form>
@@ -194,6 +197,7 @@
 			<thead>
 				<tr>
 					<th>Product</th>
+                    <th>Details</th>
 					<th>Price</th>
 				</tr>
 			</thead>
@@ -219,6 +223,7 @@
 			// Get selected product and price
 			let product = document.getElementById("product").value;
 			let price = document.getElementById("price").value;
+            let details = document.getElementById("details").value;
 
 			// Validate price input
 			if (!price || isNaN(price)) {
@@ -227,7 +232,7 @@
 			}
 
 			// Add product to array and update table
-			productList.push({ product: product, price: parseFloat(price) });
+			productList.push({ product: product, details:(details), price: parseFloat(price) });
 			updateTable();
 		}
 
@@ -241,10 +246,12 @@
 			productList.forEach(function(item, index) {
 				let row = tableBody.insertRow();
 				let productCell = row.insertCell(0);
-				let priceCell = row.insertCell(1);
-				let actionCell = row.insertCell(2);
+                let detailsCell = row.insertCell(1);
+				let priceCell = row.insertCell(2);
+				let actionCell = row.insertCell(3);
 
 				productCell.innerHTML = item.product;
+                detailsCell.innerHTML = item.details;
 				priceCell.innerHTML = item.price.toFixed(2);
 				actionCell.innerHTML = "<button type='button' onclick='removeProduct(" + index + ")'>Remove</button>";
 			});
@@ -286,9 +293,11 @@
 		productList.forEach(function(item) {
 			let row = printProductList.insertRow();
 			let productCell = row.insertCell(0);
-			let priceCell = row.insertCell(1);
+            let detailsCell = row.insertCell(1);
+			let priceCell = row.insertCell(2);
 
 			productCell.innerHTML = item.product;
+            detailsCell.innerHTML = item.details;
 			priceCell.innerHTML = item.price.toFixed(2);
 		});
 
