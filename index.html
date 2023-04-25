@@ -4,24 +4,24 @@
 	<title>Quotation Form</title>
 	<style>
 		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
+			font-family: inter, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+			margin: 20;
+			padding: 20;
 		}
 		h1 {
 			text-align: center;
-			margin: 20px 0;
+			margin: 30px 0;
 		}
 		form {
 			max-width: 800px;
 			margin: 0 auto;
-			padding: 20px;
+			padding: 40px;
 			border: 1px solid #ccc;
-			border-radius: 5px;
+			border-radius: 7px;
 		}
 		label {
 			display: block;
-			margin-bottom: 10px;
+			margin-bottom: 2px;
 		}
 		input[type="text"],
 		select {
@@ -31,10 +31,19 @@
 			border-radius: 5px;
 			margin-bottom: 20px;
 		}
+
+        input {
+            width: 100%;
+            padding: auto;
+        }
 		button {
+            font-weight: 400;
 			background-color: #4CAF50;
 			color: white;
-			padding: 10px;
+			padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
 			border: none;
 			border-radius: 5px;
 			cursor: pointer;
@@ -118,6 +127,8 @@
 
         <label for="price">Price</label>
 		<input type="text" id="price" name="price">
+        
+        <h6>  </h6>
 	    <button type="button" onclick="addProduct()">Add Product</button>
 
 
@@ -159,11 +170,12 @@
 	</form>
 
 	<div id="printable" style="display:none">
+
 		<h1>Quotation</h1>
 
         <h2>Client Detials</h2>
 		<p><strong>Name:</strong> <span id="printClientName"></span></p>
-         <p><strong>Company:</strong> <span id="printClientCompany"></span></p>
+        <p><strong>Company:</strong> <span id="printClientCompany"></span></p>
 		<p><strong>Email:</strong> <span id="printClientEmail"></span></p>
         <p><strong>Address:</strong> <span id="printClientAddress"></span></p>
         <p><strong>Phone:</strong> <span id="printClientPhone"></span></p>
@@ -195,6 +207,7 @@
 				</tr>
 			</tfoot>
 		</table>
+
 	</div>
 
 	<script>
